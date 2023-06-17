@@ -1,0 +1,6 @@
+1. open anaconda powershell
+2. cd "directory"
+3. python server.py
+4. open another powershell
+5. cd "directory"
+6. python request.py
