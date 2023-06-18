@@ -1,83 +1,32 @@
-import pycaret.classification import load_model, predict_model
 import streamlit as st
 import pandas as pd
 import numpy as np
+import joblib
+import config
 
-def predict(model, df):
-   predictions_data = predict_model(estimator = model, data = df)
-   return predictions_data['Label'][0]
-    
-model = load_model('model')
+# load model
+#model = joblib.load('model.joblib')
+features = config.features
 
-st.title('Wine Quality Classifier Web App')
-st.write('This is a web app to classify the quality of your wine.')
+def predict(input):
+    predictions = model.predict(input)
 
+st.title('Classifier')
 
-fixed_acidity = st.sidebar.slider(label = 'Fixed Acidity', min_value = 4.0,
-                          max_value = 16.0 ,
-                          value = 10.0,
-                          step = 0.1)
+passengerid = st.text_input("Input Passenger ID", '123456') 
+pclass = st.selectbox("Choose class", [1,2,3])
+name  = st.text_input("Input Passenger Name", 'John Smith')
+sex = st.selectbox("Choose sex", ['male','female'])
+age = st.slider("Choose age",0,100)
+sibsp = st.slider("Choose siblings",0,10)
+parch = st.slider("Choose parch",0,2)
+ticket = st.text_input("Input Ticket Number", "12345") 
+fare = st.number_input("Input Fare Price", 0,1000)
+cabin = st.text_input("Input Cabin", "C52") 
+embarked = st.select_slider("Did they Embark?", ['S','C','Q'])
 
-volatile_acidity = st.sidebar.slider(label = 'Volatile Acidity', min_value = 0.00,
-                          max_value = 2.00 ,
-                          value = 1.00,
-                          step = 0.01)
-                          
-citric_acid = st.sidebar.slider(label = 'Citric Acid', min_value = 0.00,
-                          max_value = 1.00 ,
-                          value = 0.50,
-                          step = 0.01)                          
-
-residual_sugar = st.sidebar.slider(label = 'Residual Sugar', min_value = 0.0,
-                          max_value = 16.0 ,
-                          value = 8.0,
-                          step = 0.1)
-
-chlorides = st.sidebar.slider(label = 'Chlorides', min_value = 0.000,
-                          max_value = 1.000 ,
-                          value = 0.500,
-                          step = 0.001)
-   
-f_sulf_diox = st.sidebar.slider(label = 'Free Sulfur Dioxide', min_value = 1,
-                          max_value = 72,
-                          value = 36,
-                          step = 1)
-
-t_sulf_diox = st.sidebar.slider(label = 'Total Sulfur Dioxide', min_value = 6,
-                          max_value = 289 ,
-                          value = 144,
-                          step = 1)
-
-density = st.sidebar.slider(label = 'Density', min_value = 0.0000,
-                          max_value = 2.0000 ,
-                          value = 0.9900,
-                          step = 0.0001)
-
-ph = st.sidebar.slider(label = 'pH', min_value = 2.00,
-                          max_value = 5.00 ,
-                          value = 3.00,
-                          step = 0.01)
-                          
-sulphates = st.sidebar.slider(label = 'Sulphates', min_value = 0.00,
-                          max_value = 2.00,
-                          value = 0.50,
-                          step = 0.01)
-
-alcohol = st.sidebar.slider(label = 'Alcohol', min_value = 8.0,
-                          max_value = 15.0,
-                          value = 10.5,
-                          step = 0.1)
-
-features = {'fixed acidity': fixed_acidity, 'volatile acidity': volatile_acidity,
-            'citric acid': citric_acid, 'residual sugar': residual_sugar,
-            'chlorides': chlorides, 'free sulfur dioxide': f_sulf_diox,
-            'total sulfur dioxide': t_sulf_diox, 'density': density,
-            'pH': ph, 'sulphates': sulphates, 'alcohol': alcohol}
- 
-features_df  = pd.DataFrame([features])
-
-st.table(features_df)  
+row = np.array([passengerid, pclass, name, sex, age, sibsp, parch, ticket, fare, cabin, embarked]) 
+input = pd.DataFrame([row], columns = features)
 
 if st.button('Predict', use_container_width=True):
-    prediction = predict(model, features_df)
-    st.write(' Based on feature values, your wine quality is '+ str(prediction))
+    prediction = predict(input)
