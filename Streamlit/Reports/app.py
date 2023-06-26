@@ -72,18 +72,20 @@ if choice == "Profiling":
     st.download_button(label="Download Report", data=export, file_name='profile_report.html', use_container_width=True)
 
 if choice == "Target":
-    with st.form('line_chart'):
+    with st.form('bar_chart'):
         selected_target = st.selectbox(label='target', options=df.columns)
-        selected_time = st.selectbox(label='time', options=df.columns)
+        selected_time = st.selectbox(label='datetime feature', options=df.columns)
         submitted = st.form_submit_button('Submit')
+        
         if submitted:
-            # df[selected_time] = pd.to_datetime(df[selected_time], errors='coerce')
-            # start_date = st.date_input("Start date", value=df[selected_time].min())
-            # end_date = st.date_input("End date", value=df[selected_time].max())
-            # filtered_df = df.loc[(df[selected_time] >= start_date) & (df[selected_time] <= end_date)]
-            filtered_df = df.copy()
+            df[selected_time] = pd.to_datetime(df[selected_time], errors='coerce')
+            start_date = st.date_input("Start date", value=df[selected_time].min())
+            end_date = st.date_input("End date", value=df[selected_time].max())
+            filtered_df = df.loc[(df[selected_time] >= str(start_date)) & (df[selected_time] <= str(end_date))]
+            
             values_df = pd.concat([filtered_df[selected_target].value_counts(), filtered_df[selected_target].value_counts(normalize=True)], axis=1, keys=('count','percentage'))
             st.dataframe(values_df, use_container_width=True)
+            
             labels = filtered_df[selected_target].value_counts().index
             values = filtered_df[selected_target].value_counts().values
             pie_fig = px.pie(filtered_df, values=values, labels=labels, title=selected_target)
@@ -91,3 +93,6 @@ if choice == "Target":
             
             line_fig = px.histogram(filtered_df, x=selected_time, color= selected_target, barmode="group", title=selected_target)
             st.plotly_chart(line_fig) 
+                         
+
+              
