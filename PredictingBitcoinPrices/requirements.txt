@@ -1,0 +1,7 @@
+jupyterlab
+nbclient
+pandas
+seaborn
+matplotlib
+pycaret
+plotly.express
