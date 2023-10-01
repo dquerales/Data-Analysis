@@ -1,5 +1,0 @@
-1. conda create --name spark_env python=3.9 -y
-2. conda activate spark_env
-3. conda install -c conda-forge numpy pandas jupyter jupyterlab
-4. pip install pyspark
-5. jupyter lab

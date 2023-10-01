@@ -1,3 +1,0 @@
-conda activate webapp_env
-cd "directory"
-streamlit run app.py
