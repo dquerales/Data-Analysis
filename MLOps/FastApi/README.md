@@ -3,7 +3,7 @@
 *This is an example to deploy a model using FastApi*
 
 ## Installation
-1. Install requirments
+1. Install requirements
 ```
 pip install -r "requirements.txt"
 ```
