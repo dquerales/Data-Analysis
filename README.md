@@ -4,7 +4,7 @@ This repository contains exercises using Excel, R, PowerBI, Python and SQL. Also
 
 ## Installation
 
-1. Install requirements
+1. Install the requirements if needed:
 ```
 pip install -r "requirements.txt"
 ```
